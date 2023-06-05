@@ -1,4 +1,4 @@
-import {OverBreak, range} from './lib/range.mjs'
+import {OverBreak, range} from './lib/range.js'
 
 let sequence = range(1, 20, 3)
 console.log('range(1, 20, 3)')
