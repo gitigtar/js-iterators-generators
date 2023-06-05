@@ -3,9 +3,12 @@
     "es2022": true,
     "node": true,
     "browser": true,
-    "webextensions": true
+    "webextensions": true,
+    "jest/globals": true
   },
-  "extends": ["eslint:recommended"],
+  "extends": [
+    "eslint:recommended"
+  ],
   "parserOptions": {
     "sourceType": "module"
   }
