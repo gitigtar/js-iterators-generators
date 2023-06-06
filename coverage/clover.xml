@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1686060897065" clover="3.2.0">
+  <project timestamp="1686060897065" name="All files">
+    <metrics statements="14" coveredstatements="14" conditionals="15" coveredconditionals="15" methods="4" coveredmethods="4" elements="33" coveredelements="33" complexity="0" loc="14" ncloc="14" packages="1" files="1" classes="1"/>
+    <file name="range.js" path="D:\scripts\_javascript\iterators-and-generators\src\lib\range.js">
+      <metrics statements="14" coveredstatements="14" conditionals="15" coveredconditionals="15" methods="4" coveredmethods="4"/>
+      <line num="2" count="22" type="cond" truecount="2" falsecount="0"/>
+      <line num="3" count="2" type="stmt"/>
+      <line num="5" count="20" type="cond" truecount="2" falsecount="0"/>
+      <line num="6" count="4" type="stmt"/>
+      <line num="8" count="16" type="cond" truecount="2" falsecount="0"/>
+      <line num="9" count="2" type="stmt"/>
+      <line num="11" count="14" type="cond" truecount="2" falsecount="0"/>
+      <line num="12" count="2" type="stmt"/>
+      <line num="14" count="12" type="stmt"/>
+      <line num="15" count="12" type="stmt"/>
+      <line num="19" count="34" type="stmt"/>
+      <line num="24" count="11" type="stmt"/>
+      <line num="28" count="28" type="stmt"/>
+      <line num="32" count="7" type="stmt"/>
+    </file>
+  </project>
+</coverage>
