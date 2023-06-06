@@ -6,10 +6,9 @@
     "webextensions": true,
     "jest/globals": true
   },
-  "extends": [
-    "eslint:recommended"
-  ],
+  "extends": ["eslint:recommended"],
   "parserOptions": {
     "sourceType": "module"
-  }
+  },
+  "plugins": ["jest"]
 }
