@@ -2,7 +2,8 @@ function* range(start = 0, finish = Infinity, step = 1) {
   if (!Number.isInteger(start)) {
     throw TypeError('Argument `start` must be an integer')
   }
-  if (!Number.isInteger(finish)) {
+  // Number.isInteger(Infinity) === false
+  if (!Number.isInteger(finish) && (isNaN(finish) || isFinite(finish))) {
     throw TypeError('Argument `finish` must be an integer')
   }
   if (!Number.isInteger(step)) {
