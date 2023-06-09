@@ -1,113 +1,100 @@
-import {OverBreak, range} from '../src/lib/range.js'
+import {OverBreak, range} from '#lib/range.js'
 
-function stringifyRange({start, finish, step}) {
-  let name = 'range('
-  if (start) name += `${start}`
-  if (finish) name += `, ${finish}`
-  if (step) name += `, ${step}`
-  name += ')'
-  return name
-}
-
-function rangeSeqTestName({start, finish, step, expected}) {
-  let name = stringifyRange({start, finish, step})
+function rangeSeqTestName({parameters, expected}) {
+  let name = `range(${parameters})`
   return `${name} generate the sequence: ${expected}`
 }
 
-function OverBreakSeqTestName({start, finish, step, expected}) {
-  let name = `OverBreak(${stringifyRange({start, finish, step})})`
+function OverBreakSeqTestName({parameters, expected}) {
+  let name = `OverBreak(range(${parameters}))`
   return `${name} generate the sequence: ${expected}`
 }
 
 describe('Sequences', () => {
   const cases = [
-    {parameters: {start: 1, finish: 4}, result: [1, 2, 3]},
+    {parameters: [1, 4], result: [1, 2, 3]},
     {
-      parameters: {start: 1, finish: 20, step: 3},
+      parameters: [1, 20, 3],
       result: [1, 4, 7, 10, 13, 16, 19],
     },
     {
-      parameters: {start: 1, finish: -20, step: -3},
+      parameters: [1, -20, -3],
       result: [1, -2, -5, -8, -11, -14, -17],
     },
     {
-      parameters: {start: 1, finish: -1},
+      parameters: [1, -1],
       result: [],
     },
     {
-      parameters: {start: 1, finish: 2, step: -1},
+      parameters: [1, 2, -1],
       result: [],
     },
     {
-      parameters: {start: 1, finish: 1},
+      parameters: [1, 1],
       result: [],
     },
   ]
 
-  describe.each(cases)(
-    'range',
-    ({parameters: {start, finish, step}, result: expected}) => {
-      test(rangeSeqTestName({start, finish, step, expected}), () => {
-        const sequence = [...range(start, finish, step)]
-        expect(sequence).toStrictEqual(expected)
-      })
-    },
-  )
+  describe.each(cases)('range', ({parameters, result: expected}) => {
+    test(rangeSeqTestName({parameters, expected}), () => {
+      const sequence = [...range(...parameters)]
+      expect(sequence).toStrictEqual(expected)
+    })
+  })
 
-  describe.each(cases)(
-    'OverBreak',
-    ({parameters: {start, finish, step}, result: expected}) => {
-      test(OverBreakSeqTestName({start, finish, step, expected}), () => {
-        const sequence = [...new OverBreak(range(start, finish, step))]
-        expect(sequence).toStrictEqual(expected)
-      })
-    },
-  )
+  describe.each(cases)('OverBreak', ({parameters, result: expected}) => {
+    test(OverBreakSeqTestName({parameters, expected}), () => {
+      const sequence = [...new OverBreak(range(...parameters))]
+      expect(sequence).toStrictEqual(expected)
+    })
+  })
 })
 
 describe('Errors', () => {
   const cases = [
     {
-      parameters: {start: 'A'},
-      name: 'Throws an error when the parameter `start` is not an integer',
-      error: TypeError('Argument `start` must be an integer'),
+      parameters: [],
+      error: TypeError('range expected at least 1 argument, got 0'),
     },
     {
-      parameters: {start: 1, finish: 10.1},
-      name: 'Throws an error when the parameter `finish` is not an integer',
-      error: TypeError('Argument `finish` must be an integer'),
+      parameters: [1, 4, 1, 1],
+      error: TypeError(`range expected at most 3 arguments, got 4`),
     },
     {
-      parameters: {start: 1, finish: 10, step: '%'},
-      name: 'Throws an error when the parameter step  is not an integer',
-      error: TypeError('Argument `step` must be an integer'),
+      parameters: ['A'],
+      error: TypeError("'string' is not allowed, an integer is expected"),
     },
     {
-      parameters: {start: 1, finish: 10, step: 0},
-      name: 'Throws an error when the parameter step is zero',
-      error: new Error('Argument `step` must not be zero'),
+      parameters: [1, 10.1],
+      error: TypeError('an integer is expected, got a float'),
+    },
+    {
+      parameters: [1, 10, '%'],
+      error: TypeError("'string' is not allowed, an integer is expected"),
+    },
+    {
+      parameters: [1, 10, 0],
+      error: RangeError('the third argument must not be zero'),
+    },
+    {
+      parameters: [-Infinity, Infinity],
+      error: RangeError('the argument must be finite'),
     },
   ]
 
-  describe.each(cases)(
-    'range',
-    ({parameters: {start, finish, step}, error, name}) => {
-      test(name, () => {
-        const sequence = range(start, finish, step)
-        expect(() => sequence.next()).toThrow(error)
-      })
-    },
-  )
+  describe.each(cases)('range', ({parameters, error}) => {
+    test(`range(${parameters}) throws an error`, () => {
+      const sequence = range(...parameters)
+      expect(() => sequence.next()).toThrow(error)
+    })
+  })
 
-  describe.each(cases)(
-    'OverBreak',
-    ({parameters: {start, finish, step}, error, name}) => {
-      test(name, () => {
-        const sequence = new OverBreak(range(start, finish, step))
-        expect(() => sequence.next()).toThrow(error)
-      })
-    },
-  )
+  describe.each(cases)('OverBreak', ({parameters, error}) => {
+    test(`OverBreak(range(${parameters})) throws an error`, () => {
+      const sequence = new OverBreak(range(...parameters))
+      expect(() => sequence.next()).toThrow(error)
+    })
+  })
 })
 
 describe('After break', () => {
@@ -115,7 +102,7 @@ describe('After break', () => {
   let sequence = undefined
 
   beforeEach(() => {
-    sequence = range()
+    sequence = range(Infinity)
   })
 
   test('range() - no iterations after break', () => {

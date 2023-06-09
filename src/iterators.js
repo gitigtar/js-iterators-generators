@@ -57,7 +57,7 @@ try {
 //    Some objects might be iterated over only once other
 // more than once, it depends on implementation.
 //    @@iterator is a well-known symbol:
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#well-known_symbols
+// https://tc39.es/ecma262/#sec-well-known-symbols
 function makeIterable() {
   let n = 1
   const finish = 4
